@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:crypto_coins_list/repositories/crypto_coins/models/news_list.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -34,7 +35,7 @@ class CryptoCoinRepository implements AbstractCoinsRepository {
 
   Future<List<CryptoCoin>> _fetchCoinsListFromApi() async {
     final response = await dio.get(
-        'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,BNB,AID,AERGO,AGI,BRAT,BRD,BSTN,BQTX&tsyms=USD');
+        'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,BNB,USDC,AID,AERGO,KAS,AGI,DAI,AVAX,MATIC,LINK,BRAT,BRD,BSTN,BQTX&tsyms=USD');
     final data = response.data as Map<String, dynamic>;
     final dataRaw = data['RAW'] as Map<String, dynamic>;
     final cryptoCoinsList = dataRaw.entries.map((e) {
@@ -67,5 +68,23 @@ class CryptoCoinRepository implements AbstractCoinsRepository {
     final usdData = coinData['USD'] as Map<String, dynamic>;
     final details = CryptoCoinDetail.fromJson(usdData);
     return CryptoCoin(name: currencyCode, details: details);
+  }
+
+  @override
+  Future<List<NewsList>> getNewsList() async {
+    final response = await dio
+        .get('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
+    final data = response.data['Data'] as List<dynamic>;
+
+    final newsList = data.map((news) {
+      return NewsList(
+          title: news['title'] as String,
+          body: news['body'] as String,
+          id: int.parse(news['id']),
+          imageurl: news['imageurl'],
+          guid: news['guid']);
+    }).toList();
+
+    return newsList;
   }
 }

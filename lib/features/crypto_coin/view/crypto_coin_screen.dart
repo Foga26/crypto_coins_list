@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:crypto_coins_list/features/crypto_coin/bloc/crypto_coin_details/crypto_coin_details_bloc.dart';
-import 'package:crypto_coins_list/features/crypto_coin/bloc/widgets/base_card.dart';
+import 'package:crypto_coins_list/features/crypto_coin/view/charts.dart';
+import 'package:crypto_coins_list/features/crypto_coin/widgets/base_card.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:get_it/get_it.dart';
 
 class CryptoCoinScreen extends StatefulWidget {
@@ -24,6 +29,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   @override
   void initState() {
     // _coinDetailsBloc.add(LoadCryptoCoinDetails(currencyCode: coin!.name));
+
     super.initState();
   }
 
@@ -33,6 +39,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
     assert(args != null && args is CryptoCoin, 'You must provide String args');
     coin = args as CryptoCoin;
     _coinDetailsBloc.add(LoadCryptoCoinDetails(currencyCode: coin!.name));
+
     super.didChangeDependencies();
   }
 
@@ -40,63 +47,77 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: BlocBuilder<CryptoCoinDetailsBloc, CryptoCoinDetailsState>(
-        bloc: _coinDetailsBloc,
-        builder: (context, state) {
-          if (state is CryptoCoinDetailsLoaded) {
-            final coin = state.coin;
-            final coinDetails = coin.details;
-            return Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 160,
-                    width: 160,
-                    child: Image.network(coinDetails.fullImageUrl),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    coin.name,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
+      body: ListView(children: [
+        BlocBuilder<CryptoCoinDetailsBloc, CryptoCoinDetailsState>(
+          bloc: _coinDetailsBloc,
+          builder: (context, state) {
+            if (state is CryptoCoinDetailsLoaded) {
+              final coin = state.coin;
+              final coinDetails = coin.details;
+              return Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 160,
+                      width: 160,
+                      child: Image.network(coinDetails.fullImageUrl),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  BaseCard(
-                    child: Center(
-                      child: Text(
-                        '${coinDetails.priceInUSD} \$',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
+                    const SizedBox(height: 24),
+                    Text(
+                      coin.name,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    BaseCard(
+                      child: Center(
+                        child: Text(
+                          '${coinDetails.priceInUSD} \$',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  BaseCard(
-                    child: Column(
-                      children: [
-                        _DataRow(
-                          title: 'Hight 24 Hour',
-                          value: '${coinDetails.hight24Hour} \$',
-                        ),
-                        const SizedBox(height: 6),
-                        _DataRow(
-                          title: 'Low 24 Hour',
-                          value: '${coinDetails.low24Hours} \$',
-                        ),
-                      ],
+                    BaseCard(
+                      child: Column(
+                        children: [
+                          _DataRow(
+                            title: 'Hight 24 Hour',
+                            value:
+                                '${coinDetails.hight24Hour.toStringAsFixed(1)} \$',
+                          ),
+                          const SizedBox(height: 6),
+                          _DataRow(
+                            title: 'Low 24 Hour',
+                            value:
+                                '${coinDetails.low24Hours.toStringAsFixed(1)} \$',
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                          width: double.infinity,
+                          height: 320,
+                          child: ChartsLine(
+                            coin: coin,
+                          )),
+                    ),
+                    Center(child: Text('sdasd'))
+                  ],
+                ),
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
+      ]),
     );
   }
 }

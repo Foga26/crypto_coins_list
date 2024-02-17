@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 final darkTheme = ThemeData(
     appBarTheme: const AppBarTheme(
+        actionsIconTheme: IconThemeData(color: Colors.white),
         elevation: 0,
-        backgroundColor: Color.fromARGB(255, 53, 53, 53),
+        backgroundColor: Color.fromARGB(255, 63, 63, 62),
         titleTextStyle: TextStyle(
             color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
     listTileTheme: const ListTileThemeData(iconColor: Colors.white),
     dividerColor: Colors.white24,
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
-    scaffoldBackgroundColor: const Color.fromARGB(255, 53, 53, 53),
+    scaffoldBackgroundColor: Color.fromARGB(255, 61, 65, 63),
     useMaterial3: true,
     textTheme: TextTheme(
         bodyMedium: const TextStyle(
