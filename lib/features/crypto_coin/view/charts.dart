@@ -21,7 +21,7 @@ class _ChartsLineState extends State<ChartsLine> {
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
       // Генерация случайных высоких и низких цен
       highPrices.add((widget.coin.details.priceInUSD +
               (DateTime.now().millisecondsSinceEpoch % 100))
@@ -76,19 +76,18 @@ class _ChartsLineState extends State<ChartsLine> {
         }).toList(),
         barWidth: 2,
         color: Colors.green,
-        isCurved: true,
+        isCurved: false,
       ),
     ];
 
     return LineChartData(
-      clipData: FlClipData.all(),
       lineTouchData: LineTouchData(
           touchTooltipData: LineTouchTooltipData(tooltipBgColor: Colors.black)),
       baselineX: widget.coin.details.priceInUSD,
       baselineY: widget.coin.details.priceInUSD,
-      gridData: FlGridData(show: true, drawVerticalLine: false),
+      gridData: FlGridData(show: true, drawVerticalLine: true),
       borderData: FlBorderData(
-        show: true,
+        show: false,
       ),
       backgroundColor: Colors.black,
       lineBarsData: lineBarsData,
@@ -97,7 +96,7 @@ class _ChartsLineState extends State<ChartsLine> {
             drawBelowEverything: false,
             sideTitles: SideTitles(
               getTitlesWidget: leftTitleWidgets,
-              reservedSize: 20,
+              reservedSize: 100,
               interval: 20,
               showTitles: false,
             )),
