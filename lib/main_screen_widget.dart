@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/features/crypto_list/view/crypto_list_screen.dart';
 import 'package:crypto_coins_list/features/news/view/news_screen.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class MainScreenwidget extends StatefulWidget {
   const MainScreenwidget({super.key});
 

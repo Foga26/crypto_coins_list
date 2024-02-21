@@ -21,7 +21,7 @@ class _ChartsLineState extends State<ChartsLine> {
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       // Генерация случайных высоких и низких цен
       highPrices.add((widget.coin.details.priceInUSD +
               (DateTime.now().millisecondsSinceEpoch % 100))
@@ -48,7 +48,7 @@ class _ChartsLineState extends State<ChartsLine> {
     return SideTitleWidget(
       axisSide: meta.axisSide,
       child: Text(' ${value}\$',
-          style: TextStyle(color: Colors.white, fontSize: 12)),
+          style: const TextStyle(color: Colors.white, fontSize: 12)),
     );
   }
 
@@ -81,11 +81,11 @@ class _ChartsLineState extends State<ChartsLine> {
     ];
 
     return LineChartData(
-      lineTouchData: LineTouchData(
+      lineTouchData: const LineTouchData(
           touchTooltipData: LineTouchTooltipData(tooltipBgColor: Colors.black)),
       baselineX: widget.coin.details.priceInUSD,
       baselineY: widget.coin.details.priceInUSD,
-      gridData: FlGridData(show: true, drawVerticalLine: true),
+      gridData: const FlGridData(show: true, drawVerticalLine: true),
       borderData: FlBorderData(
         show: false,
       ),
@@ -100,15 +100,15 @@ class _ChartsLineState extends State<ChartsLine> {
               interval: 20,
               showTitles: false,
             )),
-        bottomTitles: AxisTitles(
+        bottomTitles: const AxisTitles(
             sideTitles: SideTitles(
           showTitles: false,
         )),
-        topTitles: AxisTitles(
+        topTitles: const AxisTitles(
             sideTitles: SideTitles(
           showTitles: false,
         )),
-        leftTitles: AxisTitles(
+        leftTitles: const AxisTitles(
             axisNameSize: 5, sideTitles: SideTitles(showTitles: false)),
       ),
     );
@@ -118,7 +118,7 @@ class _ChartsLineState extends State<ChartsLine> {
 class CharBar extends StatefulWidget {
   final CryptoCoin? coin;
 
-  CharBar({super.key, this.coin});
+  const CharBar({super.key, this.coin});
   @override
   _CharBarState createState() => _CharBarState();
 }

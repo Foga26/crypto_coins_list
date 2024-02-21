@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/models/news_list.dart';
+import 'package:crypto_coins_list/router/router.dart';
 import 'package:flutter/material.dart';
 
 class NewsTile extends StatelessWidget {
@@ -12,7 +14,7 @@ class NewsTile extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
           onTap: () {
-            Navigator.of(context).pushNamed('/news', arguments: news);
+            AutoRouter.of(context).push(NewsRouteFull(news: news));
           },
           title: Padding(
             padding: const EdgeInsets.only(bottom: 20),

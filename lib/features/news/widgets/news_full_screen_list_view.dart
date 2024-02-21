@@ -6,7 +6,8 @@ import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NewsFullScreenListView extends StatefulWidget {
-  const NewsFullScreenListView({super.key});
+  const NewsFullScreenListView({super.key, required this.news});
+  final NewsList news;
 
   @override
   State<NewsFullScreenListView> createState() => _NewsFullScreenListViewState();
@@ -17,17 +18,13 @@ class _NewsFullScreenListViewState extends State<NewsFullScreenListView> {
     await launch(url);
   }
 
-  NewsList? news;
   final _newsListBloc = NewsListBloc(
     GetIt.I<AbstractCoinsRepository>(),
   );
   @override
-  void didChangeDependencies() {
-    final args = ModalRoute.of(context)?.settings.arguments;
-
-    news = args as NewsList;
+  void initState() {
     _newsListBloc.add(LoadNewsList());
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
@@ -40,19 +37,21 @@ class _NewsFullScreenListViewState extends State<NewsFullScreenListView> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '<<${news!.title}>>',
+                '<<${widget.news.title}>>',
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(
-                width: 200, height: 200, child: Image.network(news!.imageurl)),
+                width: 200,
+                height: 200,
+                child: Image.network(widget.news.imageurl)),
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  news!.body,
+                  widget.news.body,
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
@@ -66,7 +65,7 @@ class _NewsFullScreenListViewState extends State<NewsFullScreenListView> {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white)),
                   onPressed: () {
-                    _launchURL(news!.guid);
+                    _launchURL(widget.news.guid);
                   },
                   child: Text(
                     'Read More',
