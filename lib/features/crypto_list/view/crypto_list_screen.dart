@@ -62,8 +62,24 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
             surfaceTintColor: Colors.transparent,
             title: Text('Crytpo Coin List'),
             bottom: PreferredSize(
-              child: TextFormField(),
               preferredSize: Size.fromHeight(50),
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                color: Colors.black.withOpacity(0.2),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 9),
+                  child: Row(
+                    children: [
+                      Icon(Icons.search),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text('Поиск')
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
           SliverPadding(

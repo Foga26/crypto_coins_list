@@ -88,3 +88,23 @@ class CryptoCoinRepository implements AbstractCoinsRepository {
     return newsList;
   }
 }
+
+ /*
+  @override
+  Future<List<NewsList>> getNewsList() async {
+    final response = await dio
+        .get('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
+    final data = response.data['Data'] as Map<String, dynamic>;
+
+    final newsList = data.entries.map((news) {
+      return NewsList(
+          title: news.value['title'] as String,
+          body: news.value['body'] as String,
+          id: int.parse(news.value['id']),
+          imageurl: news.value['imageurl'],
+          guid: news.value['guid']);
+    }).toList();
+
+    return newsList;
+  }
+ */
