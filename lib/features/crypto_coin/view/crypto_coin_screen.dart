@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/features/crypto_coin/bloc/crypto_coin_details/crypto_coin_details_bloc.dart';
 import 'package:crypto_coins_list/features/crypto_coin/view/charts.dart';
@@ -96,7 +98,16 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                             coin: coin,
                           )),
                     ),
-                    Center(child: Text('sdasd'))
+                    Center(
+                        child: TextButton(
+                            onPressed: () async {
+                              final recivePort = ReceivePort();
+                              await Isolate.spawn(summ, recivePort.sendPort);
+                              recivePort.listen((total) {
+                                debugPrint('Result 1: $total');
+                              });
+                            },
+                            child: Text('sdasd')))
                   ],
                 ),
               );
@@ -132,4 +143,12 @@ class _DataRow extends StatelessWidget {
       ],
     );
   }
+}
+
+summ(SendPort sendPort) {
+  var total = 0;
+  for (var i = 0; i <= 10000000; i++) {
+    total = i;
+  }
+  sendPort.send(total);
 }
