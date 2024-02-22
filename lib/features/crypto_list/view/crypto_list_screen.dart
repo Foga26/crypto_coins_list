@@ -74,7 +74,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                             padding: EdgeInsets.only(top: 80),
                             child: BaseBottomSheet(
                               child: Row(
-                                children: [TextField()],
+                                children: [Expanded(child: TextField())],
                               ),
                             ),
                           ));
@@ -149,7 +149,7 @@ class BaseBottomSheet extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            width: double.infinity,
+            width: 300,
             child: child,
           ),
         ],
