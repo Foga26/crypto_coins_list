@@ -37,6 +37,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MainScreenwidget(),
       );
     },
+    NewsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const NewsScreen(),
+      );
+    },
     NewsRouteFull.name: (routeData) {
       final args = routeData.argsAs<NewsRouteFullArgs>();
       return AutoRoutePage<dynamic>(
@@ -45,6 +51,12 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           news: args.news,
         ),
+      );
+    },
+    SettingRouteWidget.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SettingScreenWidget(),
       );
     },
   };
@@ -117,6 +129,20 @@ class MainRoutewidget extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [NewsScreen]
+class NewsRoute extends PageRouteInfo<void> {
+  const NewsRoute({List<PageRouteInfo>? children})
+      : super(
+          NewsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NewsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [NewsScreenFull]
 class NewsRouteFull extends PageRouteInfo<NewsRouteFullArgs> {
   NewsRouteFull({
@@ -152,4 +178,18 @@ class NewsRouteFullArgs {
   String toString() {
     return 'NewsRouteFullArgs{key: $key, news: $news}';
   }
+}
+
+/// generated route for
+/// [SettingScreenWidget]
+class SettingRouteWidget extends PageRouteInfo<void> {
+  const SettingRouteWidget({List<PageRouteInfo>? children})
+      : super(
+          SettingRouteWidget.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingRouteWidget';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

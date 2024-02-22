@@ -1,4 +1,6 @@
 import 'dart:async';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/features/news/bloc/news_list/new_list_bloc.dart';
 import 'package:crypto_coins_list/features/news/widgets/news_tile.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/abstract_coins_repository.dart';
@@ -6,14 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-class News extends StatefulWidget {
-  const News({super.key});
+@RoutePage()
+class NewsScreen extends StatefulWidget {
+  const NewsScreen({super.key});
 
   @override
-  State<News> createState() => _NewsState();
+  State<NewsScreen> createState() => _NewsScreenState();
 }
 
-class _NewsState extends State<News> {
+class _NewsScreenState extends State<NewsScreen> {
   final _newsListBloc = NewsListBloc(GetIt.I<AbstractCoinsRepository>());
 
   @override
@@ -37,9 +40,8 @@ class _NewsState extends State<News> {
             if (state is NewsListLoaded) {
               return ListView.separated(
                 separatorBuilder: (BuildContext context, int index) =>
-                    const Padding(
-                  padding: EdgeInsets.only(top: 5),
-                  child: Divider(),
+                    const Divider(
+                  height: 1,
                 ),
                 itemCount: state.newsList.length,
                 itemBuilder: (BuildContext context, int index) {

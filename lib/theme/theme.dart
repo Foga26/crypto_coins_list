@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 final darkTheme = ThemeData(
     appBarTheme: const AppBarTheme(
@@ -11,12 +10,14 @@ final darkTheme = ThemeData(
     listTileTheme: const ListTileThemeData(iconColor: Colors.white),
     dividerColor: Colors.white24,
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
-    scaffoldBackgroundColor: Color.fromARGB(255, 61, 65, 63),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 9, 37, 53),
     useMaterial3: true,
     textTheme: TextTheme(
         bodyMedium: const TextStyle(
             color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),
         labelSmall: TextStyle(
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.green.withOpacity(0.8),
             fontWeight: FontWeight.w700,
-            fontSize: 14)));
+            fontSize: 20),
+        labelMedium: const TextStyle(
+            color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20)));

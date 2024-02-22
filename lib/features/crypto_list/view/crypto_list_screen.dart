@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/features/crypto_list/bloc/crypto_list_bloc.dart';
+import 'package:crypto_coins_list/features/crypto_list/widgets/search_button.dart';
 import 'package:crypto_coins_list/features/crypto_list/widgets/widgets.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 
 @RoutePage()
 class CryptoListScreen extends StatefulWidget {
@@ -60,14 +60,30 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
             snap: true,
             floating: true,
             surfaceTintColor: Colors.transparent,
-            title: Text('Crytpo Coin List'),
+            title: const Text('Crytpo Coin List'),
             bottom: PreferredSize(
-              child: TextFormField(),
-              preferredSize: Size.fromHeight(50),
+              preferredSize: const Size.fromHeight(50),
+              child: SearchButton(
+                onTap: () {
+                  showModalBottomSheet(
+                      //параметр который открывает на весь экран
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      builder: (context) => const Padding(
+                            padding: EdgeInsets.only(top: 80),
+                            child: BaseBottomSheet(
+                              child: Row(
+                                children: [TextField()],
+                              ),
+                            ),
+                          ));
+                },
+              ),
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.only(top: 16),
+            padding: const EdgeInsets.only(top: 16),
             sliver: BlocBuilder<CryptoListBloc, CryptoListState>(
               bloc: _cryptoListBloc,
               builder: (context, state) {
@@ -99,7 +115,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                     ),
                   );
                 } else {
-                  return SliverFillRemaining(
+                  return const SliverFillRemaining(
                     child: Center(
                       child: CircularProgressIndicator(
                         color: Colors.blue,
@@ -112,24 +128,32 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
           ),
         ],
       ),
-    )
+    ));
+  }
+}
 
-        // (_cryptoCoinsList == null)
-        // ? const Center(
-        //     child: CircularProgressIndicator(
-        //     color: Colors.blue,
-        //   ))
-        // : ListView.separated(
-        //     padding: const EdgeInsets.only(top: 16),
-        //     separatorBuilder: (BuildContext context, int index) =>
-        //         const Divider(),
-        //     itemCount: _cryptoCoinsList!.length,
-        //     itemBuilder: (BuildContext context, int index) {
-        //       final coin = _cryptoCoinsList![index];
+class BaseBottomSheet extends StatelessWidget {
+  const BaseBottomSheet({
+    super.key,
+    required this.child,
+  });
+  final Widget child;
 
-        //       return CryptoCoinTile(coin: coin);
-        //     },
-        //   ),
-        );
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+          color: Theme.of(context).canvasColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20))),
+      child: Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: child,
+          ),
+        ],
+      ),
+    );
   }
 }

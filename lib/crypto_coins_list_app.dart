@@ -1,4 +1,3 @@
-import 'package:crypto_coins_list/main_screen_widget.dart';
 import 'package:crypto_coins_list/router/router.dart';
 import 'package:crypto_coins_list/theme/theme.dart';
 import 'package:flutter/material.dart';

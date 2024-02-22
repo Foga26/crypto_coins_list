@@ -13,6 +13,7 @@ class NewsTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
+          tileColor: Colors.black.withOpacity(0.1),
           onTap: () {
             AutoRouter.of(context).push(NewsRouteFull(news: news));
           },
@@ -22,7 +23,7 @@ class NewsTile extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               news.title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.w800),
@@ -33,7 +34,7 @@ class NewsTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             news.body,
             softWrap: true,
-            style: TextStyle(color: Colors.white, fontSize: 12),
+            style: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           leading: SizedBox(
               height: 70,
