@@ -1,10 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/models/news_list.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
-
-import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import 'models/crypto_coin_details.dart';
@@ -35,7 +34,7 @@ class CryptoCoinRepository implements AbstractCoinsRepository {
 
   Future<List<CryptoCoin>> _fetchCoinsListFromApi() async {
     final response = await dio.get(
-        'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,BNB,USDC,AID,AERGO,KAS,AGI,DAI,AVAX,MATIC,LINK,BRAT,BRD,BSTN,BQTX&tsyms=USD');
+        'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ADA,DOGE,KAS,ETC,DAI,IMXm,ICP,GRT,STXk,VET,SHIB,TON,TRX,ETH,BNB,USDC,AID,AERGO,KAS,AGI,DAI,AVAX,MATIC,LINK,BRAT,BRD,BSTN,BQTX&tsyms=USD');
     final data = response.data as Map<String, dynamic>;
     final dataRaw = data['RAW'] as Map<String, dynamic>;
     final cryptoCoinsList = dataRaw.entries.map((e) {

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/features/crypto_list/bloc/crypto_list_bloc.dart';
+import 'package:crypto_coins_list/features/crypto_list/widgets/search_bottom_sheet.dart';
 import 'package:crypto_coins_list/features/crypto_list/widgets/search_button.dart';
 import 'package:crypto_coins_list/features/crypto_list/widgets/widgets.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
@@ -18,6 +19,7 @@ class CryptoListScreen extends StatefulWidget {
 }
 
 class _CryptoListScreenState extends State<CryptoListScreen> {
+  final _searchController = TextEditingController();
   final _cryptoListBloc = CryptoListBloc(GetIt.I<AbstractCoinsRepository>());
 
   @override
@@ -29,6 +31,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
         // appBar: AppBar(
         //   centerTitle: true,
@@ -55,30 +58,16 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
-            centerTitle: true,
             pinned: true,
-            snap: true,
-            floating: true,
+            backgroundColor: theme.scaffoldBackgroundColor,
             surfaceTintColor: Colors.transparent,
-            title: const Text('Crytpo Coin List'),
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(50),
+              preferredSize: const Size.fromHeight(20),
               child: SearchButton(
-                onTap: () {
-                  showModalBottomSheet(
-                      //параметр который открывает на весь экран
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) => const Padding(
-                            padding: EdgeInsets.only(top: 80),
-                            child: BaseBottomSheet(
-                              child: Row(
-                                children: [Expanded(child: TextField())],
-                              ),
-                            ),
-                          ));
-                },
+                onTap: () => _showSearchButtonSheet(
+                  context,
+                ),
+                controller: _searchController,
               ),
             ),
           ),
@@ -92,7 +81,14 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         final coin = state.coinList[index];
-                        return CryptoCoinTile(coin: coin);
+                        return Column(
+                          children: [
+                            CryptoCoinTile(coin: coin),
+                            const SizedBox(
+                              height: 20,
+                            )
+                          ],
+                        );
                       },
                       childCount: state.coinList.length,
                     ),
@@ -130,30 +126,18 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
       ),
     ));
   }
-}
 
-class BaseBottomSheet extends StatelessWidget {
-  const BaseBottomSheet({
-    super.key,
-    required this.child,
-  });
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20))),
-      child: Column(
-        children: [
-          SizedBox(
-            width: 300,
-            child: child,
-          ),
-        ],
-      ),
-    );
+  Future<void> _showSearchButtonSheet(BuildContext context) async {
+    final query = await showModalBottomSheet<String>(
+        //параметр который открывает на весь экран
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) => Padding(
+              padding: const EdgeInsets.only(top: 80),
+              child: SearchCoinBottomSheet(
+                searchController: _searchController,
+              ),
+            ));
   }
 }
