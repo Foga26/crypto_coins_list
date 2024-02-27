@@ -4,6 +4,7 @@ import 'package:crypto_coins_list/features/crypto_list/crypto_list.dart';
 import 'package:crypto_coins_list/features/news/view/news_screen.dart';
 import 'package:crypto_coins_list/features/news/view/news_screen_full.dart';
 import 'package:crypto_coins_list/features/settings/view/settings_screen.dart';
+import 'package:crypto_coins_list/lottie.dart';
 import 'package:crypto_coins_list/main_screen_widget.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/models/news_list.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +19,10 @@ class AppRouter extends _$AppRouter {
   //обязательно после генирации добавляем сюда каждую страницу которая нужна для переходов
   List<AutoRoute> get routes => [
         AutoRoute(
-          page: MainRoutewidget.page,
+          page: LottieRouteWidget.page,
           path: '/',
           children: [
+            AutoRoute(page: MainRoutewidget.page, path: 'main'),
             AutoRoute(page: NewsRoute.page, path: 'news'),
             AutoRoute(page: CryptoListRoute.page, path: 'cryptoList'),
             AutoRoute(page: SettingRouteWidget.page, path: 'settings'),

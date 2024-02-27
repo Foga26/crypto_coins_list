@@ -31,6 +31,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CryptoListScreen(),
       );
     },
+    LottieRouteWidget.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LottieScreenWidget(),
+      );
+    },
     MainRoutewidget.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -110,6 +116,20 @@ class CryptoListRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'CryptoListRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LottieScreenWidget]
+class LottieRouteWidget extends PageRouteInfo<void> {
+  const LottieRouteWidget({List<PageRouteInfo>? children})
+      : super(
+          LottieRouteWidget.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LottieRouteWidget';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
