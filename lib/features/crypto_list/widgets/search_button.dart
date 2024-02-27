@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class SearchButton extends StatelessWidget {
   const SearchButton(
-      {super.key, required this.onTap, required this.controller});
-  final VoidCallback onTap;
+      {super.key, required this.onChanged, required this.controller});
+  final void Function(String)? onChanged;
   final TextEditingController controller;
 
   @override
@@ -16,9 +16,10 @@ class SearchButton extends StatelessWidget {
           Expanded(
               child: Container(
             decoration: BoxDecoration(
-                color: theme.hintColor.withOpacity(0.1),
+                color: Colors.white.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(8)),
             child: TextField(
+              onChanged: onChanged,
               controller: controller,
               decoration: InputDecoration(
                   hintText: 'Поиск',
@@ -29,21 +30,6 @@ class SearchButton extends StatelessWidget {
                       const OutlineInputBorder(borderSide: BorderSide.none)),
             ),
           )),
-          const SizedBox(width: 8),
-          GestureDetector(
-            // onTap: () => _onTapSearch(context),
-            child: Container(
-              height: 48,
-              width: 48,
-              decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8)),
-              child: const Icon(
-                Icons.search,
-                color: Colors.black,
-              ),
-            ),
-          )
         ],
       ),
     );

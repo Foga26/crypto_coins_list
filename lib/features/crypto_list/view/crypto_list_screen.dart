@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/features/crypto_list/bloc/crypto_list_bloc.dart';
-import 'package:crypto_coins_list/features/crypto_list/widgets/search_bottom_sheet.dart';
 import 'package:crypto_coins_list/features/crypto_list/widgets/search_button.dart';
 import 'package:crypto_coins_list/features/crypto_list/widgets/widgets.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
@@ -19,13 +18,33 @@ class CryptoListScreen extends StatefulWidget {
 }
 
 class _CryptoListScreenState extends State<CryptoListScreen> {
+  Timer? _timer;
   final _searchController = TextEditingController();
   final _cryptoListBloc = CryptoListBloc(GetIt.I<AbstractCoinsRepository>());
+  List<CryptoCoin> filteredCoinList = [];
+  void filterCoinsByName(String name) async {
+    var bb = await _cryptoListBloc.coinsRepository.getCoinsList();
+
+    setState(() {
+      filteredCoinList = bb.where((coin) {
+        return coin.name.toLowerCase().contains(name.toLowerCase());
+      }).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _timer!.cancel();
+    super.dispose();
+  }
 
   @override
   void initState() {
     _cryptoListBloc.add(LoadCryptoList());
-
+    // _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    //   _cryptoListBloc.add(LoadCryptoList());
+    // });
     super.initState();
   }
 
@@ -33,22 +52,6 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-        // appBar: AppBar(
-        //   centerTitle: true,
-        //   title: const Text('Crypto Currencies List'),
-        //   actions: [
-        //     IconButton(
-        //         onPressed: () {
-        //           Navigator.of(context).push(MaterialPageRoute(
-        //               builder: (context) =>
-        //                   TalkerScreen(talker: GetIt.I<Talker>())));
-        //         },
-        //         icon: Icon(
-        //           Icons.document_scanner,
-        //           color: Colors.white,
-        //         ))
-        //   ],
-        // ),
         body: RefreshIndicator(
       onRefresh: () async {
         final completer = Completer();
@@ -64,11 +67,8 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(20),
               child: SearchButton(
-                onTap: () => _showSearchButtonSheet(
-                  context,
-                ),
-                controller: _searchController,
-              ),
+                  controller: _searchController,
+                  onChanged: (value) => filterCoinsByName(value)),
             ),
           ),
           SliverPadding(
@@ -77,10 +77,16 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
               bloc: _cryptoListBloc,
               builder: (context, state) {
                 if (state is CryptoListLoaded) {
+                  final displayedCoins = filteredCoinList.isNotEmpty
+                      ? filteredCoinList
+                      : state.coinList;
+
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        final coin = state.coinList[index];
+                        final coin = _searchController.text.isNotEmpty
+                            ? displayedCoins[index]
+                            : state.coinList[index];
                         return Column(
                           children: [
                             CryptoCoinTile(coin: coin),
@@ -90,7 +96,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                           ],
                         );
                       },
-                      childCount: state.coinList.length,
+                      childCount: displayedCoins.length,
                     ),
                   );
                 } else if (state is CryptoListLoadingFailure) {
@@ -125,19 +131,5 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
         ],
       ),
     ));
-  }
-
-  Future<void> _showSearchButtonSheet(BuildContext context) async {
-    final query = await showModalBottomSheet<String>(
-        //параметр который открывает на весь экран
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (context) => Padding(
-              padding: const EdgeInsets.only(top: 80),
-              child: SearchCoinBottomSheet(
-                searchController: _searchController,
-              ),
-            ));
   }
 }

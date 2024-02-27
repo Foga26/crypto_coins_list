@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:crypto_coins_list/crypto_coins_list_app.dart';
 
+import 'package:crypto_coins_list/crypto_coins_list_app.dart';
+import 'package:crypto_coins_list/features/theme/theme_provider.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/models/crypto_coin_details.dart';
 import 'package:dio/dio.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -40,6 +42,9 @@ void main() async {
 
   FlutterError.onError =
       (details) => GetIt.I<Talker>().handle(details.exception, details.stack);
-  runZonedGuarded(() => runApp(const CryptoCurrenciesListApp()),
+  runZonedGuarded(
+      () => runApp(ChangeNotifierProvider(
+          create: (context) => ThemeTest(),
+          child: const CryptoCurrenciesListApp())),
       (error, stack) => GetIt.I<Talker>().handle(error, stack));
 }

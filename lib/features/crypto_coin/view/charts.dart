@@ -23,18 +23,17 @@ class _ChartsLineState extends State<ChartsLine> {
   void initState() {
     super.initState();
     timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      // Генерация случайных высоких и низких цен
+      /* Генерация случайного значения для высокой цены.
+К текущей цене эмулируемой монеты (widget.coin.details.priceInUSD) добавляется случайное число от 0 до 99 (это делается путем взятия остатка от деления миллисекунд текущего времени на 100).
+Полученное значение конвертируется в формат с плавающей точкой (double) и добавляется в список highPrices.
+       */
       highPrices.add((widget.coin.details.priceInUSD +
               (DateTime.now().millisecondsSinceEpoch % 100))
-          .toDouble());
-      lowPrices.add((widget.coin.details.priceInUSD +
-              (DateTime.now().millisecondsSinceEpoch % 90))
           .toDouble());
 
       // Ограничение количества точек для отображения
       if (highPrices.length > 12) {
         highPrices.removeAt(0);
-        lowPrices.removeAt(0);
       }
 
       setState(() {});
@@ -42,14 +41,16 @@ class _ChartsLineState extends State<ChartsLine> {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Colors.white,
-      fontSize: 6,
-    );
     return SideTitleWidget(
+      fitInside: const SideTitleFitInsideData(
+          enabled: true,
+          axisPosition: -1,
+          parentAxisSize: 0,
+          distanceFromEdge: -7),
+      space: 2,
       axisSide: meta.axisSide,
-      child: Text(' $value\$',
-          style: const TextStyle(color: Colors.white, fontSize: 12)),
+      child: Text(' ${value.toStringAsFixed(1)} \$',
+          style: const TextStyle(color: Colors.white, fontSize: 10)),
     );
   }
 
@@ -63,7 +64,7 @@ class _ChartsLineState extends State<ChartsLine> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.white.withOpacity(0.0),
+        backgroundColor: Colors.black,
         body: LineChart(createChartData()),
       ),
     );
@@ -88,7 +89,7 @@ class _ChartsLineState extends State<ChartsLine> {
       baselineY: widget.coin.details.priceInUSD,
       gridData: const FlGridData(show: true, drawVerticalLine: true),
       borderData: FlBorderData(
-        show: false,
+        show: true,
       ),
       backgroundColor: Colors.black,
       lineBarsData: lineBarsData,
@@ -97,9 +98,8 @@ class _ChartsLineState extends State<ChartsLine> {
             drawBelowEverything: false,
             sideTitles: SideTitles(
               getTitlesWidget: leftTitleWidgets,
-              reservedSize: 100,
-              interval: 20,
-              showTitles: false,
+              reservedSize: 55,
+              showTitles: true,
             )),
         bottomTitles: const AxisTitles(
             sideTitles: SideTitles(
@@ -111,81 +111,6 @@ class _ChartsLineState extends State<ChartsLine> {
         )),
         leftTitles: const AxisTitles(
             axisNameSize: 5, sideTitles: SideTitles(showTitles: false)),
-      ),
-    );
-  }
-}
-
-class CharBar extends StatefulWidget {
-  final CryptoCoin? coin;
-
-  const CharBar({super.key, this.coin});
-  @override
-  _CharBarState createState() => _CharBarState();
-}
-
-class _CharBarState extends State<CharBar> {
-  List<double> highPrices = [];
-  List<double> lowPrices = [];
-  Timer? timer;
-
-  @override
-  void initState() {
-    super.initState();
-    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
-      // Генерация случайных высоких и низких цен
-      highPrices.add((widget.coin!.details.hight24Hour +
-              (DateTime.now().millisecondsSinceEpoch % 100))
-          .toDouble());
-      lowPrices.add((widget.coin!.details.low24Hours +
-              (DateTime.now().millisecondsSinceEpoch % 90))
-          .toDouble());
-
-      // Ограничение количества точек для отображения
-      if (highPrices.length > 12) {
-        highPrices.removeAt(0);
-        lowPrices.removeAt(0);
-      }
-
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    timer!.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: BarChart(createChartData()),
-        ),
-      ),
-    );
-  }
-
-  BarChartData createChartData() {
-    List<BarChartGroupData> barGroups = [
-      BarChartGroupData(x: 0, barsSpace: 2, barRods: [
-        BarChartRodData(
-            toY: widget.coin!.details.priceInUSD, color: Colors.green)
-      ]),
-      BarChartGroupData(
-          x: 1,
-          barsSpace: 2,
-          barRods: [BarChartRodData(toY: lowPrices.first, color: Colors.red)]),
-    ];
-
-    return BarChartData(
-      barGroups: barGroups,
-      titlesData: const FlTitlesData(
-        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
       ),
     );
   }

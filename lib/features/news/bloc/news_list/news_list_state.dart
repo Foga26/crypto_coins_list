@@ -1,6 +1,10 @@
 part of 'new_list_bloc.dart';
 
-abstract class NewsListState extends Equatable {}
+abstract class NewsListState extends Equatable {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
 
 class NewsListInitial extends NewsListState {
   @override

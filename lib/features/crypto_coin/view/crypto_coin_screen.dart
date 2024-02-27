@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/features/crypto_coin/bloc/crypto_coin_details/crypto_coin_details_bloc.dart';
 import 'package:crypto_coins_list/features/crypto_coin/view/charts.dart';
 import 'package:crypto_coins_list/features/crypto_coin/widgets/base_card.dart';
+import 'package:crypto_coins_list/in_app_push_notif.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,14 +28,19 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   @override
   void initState() {
     _coinDetailsBloc.add(LoadCryptoCoinDetails(currencyCode: widget.coin.name));
-
+// здесь нужно будет дописать таймер на обновление цены монеты каждые несколько сек
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        iconTheme: theme.appBarTheme.actionsIconTheme,
+        backgroundColor: Colors.transparent,
+      ),
       body: ListView(children: [
         BlocBuilder<CryptoCoinDetailsBloc, CryptoCoinDetailsState>(
           bloc: _coinDetailsBloc,
@@ -55,7 +61,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                     Text(
                       coin.name,
                       style: const TextStyle(
-                        fontSize: 15,
+                        fontSize: 25,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -79,7 +85,12 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                             value:
                                 '${coinDetails.hight24Hour.toStringAsFixed(1)} \$',
                           ),
-                          const SizedBox(height: 6),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Divider(
+                              height: 1,
+                            ),
+                          ),
                           _DataRow(
                             title: 'Low 24 Hour',
                             value:
@@ -92,16 +103,29 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                           width: double.infinity,
-                          height: 320,
-                          child: ChartsLine(
+                          height: 330,
+                          child: ChartsLine(coin: coin)
+                          //  ChartsLine(
+                          //   coin: coin,
+                          // )
+                          ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Center(
+                      child: SizedBox(
+                          height: 250,
+                          width: 350,
+                          child: CryptoPriceTracker(
                             coin: coin,
                           )),
                     ),
                     Center(
                         child: TextButton(
-                            onPressed: () async {
+                            onPressed: () {
                               final recivePort = ReceivePort();
-                              await Isolate.spawn(summ, recivePort.sendPort);
+                              Isolate.spawn(summ, recivePort.sendPort);
                               recivePort.listen((total) {
                                 debugPrint('Result 1: $total');
                               });
@@ -135,7 +159,6 @@ class _DataRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(width: 140, child: Text(title)),
-        const SizedBox(width: 32),
         Flexible(
           child: Text(value),
         ),
@@ -146,7 +169,7 @@ class _DataRow extends StatelessWidget {
 
 summ(SendPort sendPort) {
   var total = 0;
-  for (var i = 0; i <= 10000000; i++) {
+  for (var i = 0; i <= 1000000000; i++) {
     total = i;
   }
   sendPort.send(total);

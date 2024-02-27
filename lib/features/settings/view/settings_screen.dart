@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/features/settings/widgets/settings_toggle_card.dart';
+import 'package:crypto_coins_list/features/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class SettingScreenWidget extends StatelessWidget {
@@ -8,21 +10,24 @@ class SettingScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Provider.of<ThemeTest>(context);
     return Scaffold(
         body: CustomScrollView(slivers: [
       const SliverAppBar(
+        backgroundColor: Colors.transparent,
         snap: true,
         centerTitle: true,
         floating: true,
         title: Text('Settings'),
         elevation: 0,
-        surfaceTintColor: Colors.transparent,
       ),
       SliverToBoxAdapter(
           child: SettingsToggleCard(
         title: 'Темная тема',
-        value: true,
-        onChanged: (bool? value) {},
+        value: isLight.isLightTheme,
+        onChanged: (bool? value) {
+          isLight.darkTheme();
+        },
       )),
       SliverToBoxAdapter(
           child: SettingsToggleCard(

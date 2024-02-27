@@ -29,6 +29,7 @@ class _NewsFullScreenListViewState extends State<NewsFullScreenListView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListView(children: [
       Padding(
         padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
@@ -38,8 +39,7 @@ class _NewsFullScreenListViewState extends State<NewsFullScreenListView> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 '<<${widget.news.title}>>',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: theme.textTheme.headlineLarge,
               ),
             ),
             SizedBox(
@@ -52,24 +52,20 @@ class _NewsFullScreenListViewState extends State<NewsFullScreenListView> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   widget.news.body,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 17),
+                  style: theme.textTheme.headlineSmall!.copyWith(fontSize: 17),
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white)),
+                  style: theme.textButtonTheme.style,
                   onPressed: () {
                     _launchURL(widget.news.guid);
                   },
                   child: Text(
                     'Read More',
-                    style: TextStyle(color: Colors.black),
+                    style: theme.textTheme.headlineMedium,
                   )),
             )
           ],

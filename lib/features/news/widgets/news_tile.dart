@@ -8,6 +8,7 @@ class NewsTile extends StatelessWidget {
   final NewsList news;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 5),
       child: Padding(
@@ -23,19 +24,15 @@ class NewsTile extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               news.title,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800),
+              style: theme.textTheme.headlineLarge,
             ),
           ),
           subtitle: Text(
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            news.body,
-            softWrap: true,
-            style: const TextStyle(color: Colors.white, fontSize: 12),
-          ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              news.body,
+              softWrap: true,
+              style: theme.textTheme.headlineSmall),
           leading: SizedBox(
               height: 70,
               width: 70,
