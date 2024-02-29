@@ -14,28 +14,36 @@ class NewsTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
+          shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Colors.black, width: 4),
+              borderRadius: BorderRadius.circular(10)),
           tileColor: Colors.black.withOpacity(0.1),
           onTap: () {
             AutoRouter.of(context).push(NewsRouteFull(news: news));
           },
           title: Padding(
             padding: const EdgeInsets.only(bottom: 20),
-            child: Text(
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              news.title,
-              style: theme.textTheme.headlineLarge,
+            child: Column(
+              children: [
+                Text(
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  news.title,
+                  style: theme.textTheme.headlineLarge,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    news.body,
+                    softWrap: true,
+                    style: theme.textTheme.headlineSmall),
+              ],
             ),
           ),
-          subtitle: Text(
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              news.body,
-              softWrap: true,
-              style: theme.textTheme.headlineSmall),
-          leading: SizedBox(
-              height: 70,
-              width: 70,
+          subtitle: SizedBox(
+              height: 150,
+              width: 150,
               child: ClipRRect(
                   borderRadius: const BorderRadius.all(
                     Radius.circular(35),

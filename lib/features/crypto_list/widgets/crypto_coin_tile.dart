@@ -21,12 +21,13 @@ class CryptoCoinTile extends StatelessWidget {
         coin.name,
         style: theme.textTheme.bodyMedium,
       ),
-      subtitle: Text(
-        '${coinDetails.priceInUSD} \$',
+      // subtitle: Text(
+      //   '${coinDetails.priceInUSD} \$',
+      //   style: theme.textTheme.labelSmall,
+      // ),
+      trailing: Text(
+        '${coinDetails.priceInUSD.toStringAsFixed(1)} \$',
         style: theme.textTheme.labelSmall,
-      ),
-      trailing: const Icon(
-        Icons.arrow_forward,
       ),
       onTap: () {
         AutoRouter.of(context).push(CryptoCoinRoute(coin: coin));

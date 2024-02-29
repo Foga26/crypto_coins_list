@@ -48,7 +48,7 @@ class _CryptoPriceTrackerState extends State<CryptoPriceTracker> {
     if (widget.coin.details.priceInUSD > 1 ||
         widget.coin.details.priceInUSD < 1) {
       _displayNotification('${widget.coin.name} Price Alert',
-          '${widget.coin.name} price is \$ ${widget.coin.details.priceInUSD}');
+          '${widget.coin.name} price is \$ ${widget.coin.details.priceInUSD.toStringAsFixed(2)}');
     }
   }
 
@@ -60,7 +60,7 @@ class _CryptoPriceTrackerState extends State<CryptoPriceTracker> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '${widget.coin.name}: \$ ${widget.coin.details.priceInUSD}',
+              '${widget.coin.name}: \$ ${widget.coin.details.priceInUSD.toStringAsFixed(2)}',
               style: const TextStyle(fontSize: 24),
             ),
             ElevatedButton(

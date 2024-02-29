@@ -4,8 +4,8 @@ import 'package:crypto_coins_list/features/crypto_list/crypto_list.dart';
 import 'package:crypto_coins_list/features/news/view/news_screen.dart';
 import 'package:crypto_coins_list/features/news/view/news_screen_full.dart';
 import 'package:crypto_coins_list/features/settings/view/settings_screen.dart';
-import 'package:crypto_coins_list/lottie.dart';
-import 'package:crypto_coins_list/main_screen_widget.dart';
+import 'package:crypto_coins_list/main_screen/lottie.dart';
+import 'package:crypto_coins_list/main_screen/main_screen_widget.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/models/news_list.dart';
 import 'package:flutter/material.dart';
 

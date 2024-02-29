@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:crypto_coins_list/main_screen_widget.dart';
+import 'package:crypto_coins_list/main_screen/main_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -18,7 +18,7 @@ class _LottieScreenWidgetState extends State<LottieScreenWidget>
   @override
   void initState() {
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 400));
+        vsync: this, duration: const Duration(milliseconds: 750));
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {

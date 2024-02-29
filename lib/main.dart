@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:crypto_coins_list/crypto_coins_list_app.dart';
 import 'package:crypto_coins_list/features/theme/theme_provider.dart';
+import 'package:crypto_coins_list/main_screen/crypto_coins_list_app.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/models/crypto_coin_details.dart';
 import 'package:dio/dio.dart';

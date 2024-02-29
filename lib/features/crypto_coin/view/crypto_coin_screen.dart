@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:crypto_coins_list/features/crypto_coin/bloc/crypto_coin_details/crypto_coin_details_bloc.dart';
 import 'package:crypto_coins_list/features/crypto_coin/view/charts.dart';
 import 'package:crypto_coins_list/features/crypto_coin/widgets/base_card.dart';
+import 'package:crypto_coins_list/features/crypto_coin/widgets/data_row_widget.dart';
 import 'package:crypto_coins_list/in_app_push_notif.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,23 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   final _coinDetailsBloc = CryptoCoinDetailsBloc(
     GetIt.I<AbstractCoinsRepository>(),
   );
+  double summCoin = 0;
+  String result = '';
+  void calculateResult() {
+    final receivePort = ReceivePort();
+    Isolate.spawn(summ, {
+      'sendPort': receivePort.sendPort,
+      'coinPrice': widget.coin.details.priceInUSD,
+      'quantityCoin': 100,
+    });
+
+    receivePort.listen((total) {
+      setState(() {
+        summCoin = total;
+        result = 'Amount 10 coins:\$ ${summCoin.toStringAsFixed(1)}';
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -80,7 +98,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                     BaseCard(
                       child: Column(
                         children: [
-                          _DataRow(
+                          DataRowWidget(
                             title: 'Hight 24 Hour',
                             value:
                                 '${coinDetails.hight24Hour.toStringAsFixed(1)} \$',
@@ -91,7 +109,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                               height: 1,
                             ),
                           ),
-                          _DataRow(
+                          DataRowWidget(
                             title: 'Low 24 Hour',
                             value:
                                 '${coinDetails.low24Hours.toStringAsFixed(1)} \$',
@@ -115,22 +133,35 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                     ),
                     Center(
                       child: SizedBox(
-                          height: 250,
+                          height: 100,
                           width: 350,
                           child: CryptoPriceTracker(
                             coin: coin,
                           )),
                     ),
+                    Container(
+                      height: 35,
+                      width: double.infinity,
+                      color: Colors.black,
+                      child: Center(
+                        child: Text(
+                          result,
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     Center(
                         child: TextButton(
-                            onPressed: () {
-                              final recivePort = ReceivePort();
-                              Isolate.spawn(summ, recivePort.sendPort);
-                              recivePort.listen((total) {
-                                debugPrint('Result 1: $total');
-                              });
-                            },
-                            child: const Text('sdasd')))
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.grey)),
+                            onPressed: calculateResult,
+                            child: const Text(
+                              'Cash',
+                              style: TextStyle(color: Colors.black),
+                            ))),
                   ],
                 ),
               );
@@ -143,34 +174,11 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   }
 }
 
-class _DataRow extends StatelessWidget {
-  const _DataRow({
-    required this.title,
-    required this.value,
-  });
+void summ(Map<String, dynamic> args) {
+  final coinPrice = args['coinPrice'];
+  final quantityCoin = args['quantityCoin'];
+  final sendPort = args['sendPort'];
 
-  final String title;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(width: 140, child: Text(title)),
-        Flexible(
-          child: Text(value),
-        ),
-      ],
-    );
-  }
-}
-
-summ(SendPort sendPort) {
-  var total = 0;
-  for (var i = 0; i <= 1000000000; i++) {
-    total = i;
-  }
-  sendPort.send(total);
+  final result = coinPrice * quantityCoin;
+  sendPort.send(result);
 }
