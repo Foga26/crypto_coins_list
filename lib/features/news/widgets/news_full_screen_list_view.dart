@@ -37,15 +37,24 @@ class _NewsFullScreenListViewState extends State<NewsFullScreenListView> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                '<<${widget.news.title}>>',
-                style: theme.textTheme.headlineLarge,
+              child: Center(
+                child: Text(
+                  '<<${widget.news.title}>>',
+                ),
               ),
+            ),
+            const Divider(
+              color: Colors.black,
+              thickness: 5,
             ),
             SizedBox(
                 width: 200,
                 height: 200,
                 child: Image.network(widget.news.imageurl)),
+            const Divider(
+              color: Colors.black,
+              thickness: 5,
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Padding(

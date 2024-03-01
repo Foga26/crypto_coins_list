@@ -16,10 +16,8 @@ class NewsScreenFull extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
           iconTheme: theme.appBarTheme.actionsIconTheme,
           backgroundColor: Colors.transparent,
-          title: const Text('News'),
         ),
         body: NewsFullScreenListView(
           news: news,
