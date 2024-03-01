@@ -42,9 +42,9 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
   @override
   void initState() {
     _cryptoListBloc.add(LoadCryptoList());
-    // _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-    //   _cryptoListBloc.add(LoadCryptoList());
-    // });
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      _cryptoListBloc.add(LoadCryptoList());
+    });
     super.initState();
   }
 
