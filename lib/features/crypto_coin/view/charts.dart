@@ -62,11 +62,9 @@ class _ChartsLineState extends State<ChartsLine> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.black,
-        body: LineChart(createChartData()),
-      ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: LineChart(createChartData()),
     );
   }
 
